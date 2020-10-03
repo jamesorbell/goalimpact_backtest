@@ -3,34 +3,73 @@ import pandas as pd
 
 # Read the csv file and construct the
 # dataframe
-df = pd.read_csv('tweet_without_replies_or_changes.csv')
+df = pd.read_csv('csv/split_tweets_reduced.csv')
 
-full_texts = df.tweet__full_text.tolist()
+# splitting the time and date field
 
-match_info_list = []
-spread_list = []
-home_odds_list = []
-neutral_odds_list = []
+tweet_details = df.tweet__created_at.tolist()
 
-for i in full_texts:
-    split_text = i.split('\\n')
-    if len(split_text) != 4:
-        print('This line does not have 4 arguments: ')
+tweet_time = []
+tweet_date = []
+
+for i in tweet_details:
+    split_text = i.split(' ')
+    if len(split_text) != 2:
+        print('This line does not have 2 arguments: ')
         print(split_text)
     else:
-        match_info_list.append(split_text[0])
-        spread_list.append(split_text[1])
-        home_odds_list.append(split_text[2])
-        neutral_odds_list.append(split_text[3])
+        tweet_time.append(split_text[0])
+        tweet_date.append(split_text[1])
 
-print(match_info_list[0])
-print(spread_list[0])
-print(home_odds_list[0])
-print(neutral_odds_list[0])
 
-df['match_info'] =  match_info_list
-df['spread'] = spread_list
-df['home_odds'] = home_odds_list
-df['neutral_odds'] = neutral_odds_list
+df['tweet_time'] =  tweet_time
+df['tweet_date'] = tweet_date
 
-df.to_csv('split_tweets.csv')
+# splitting the tweet text
+
+tweet_text = df.match_info.tolist()
+
+match_start_time = []
+home_team = []
+away_team = []
+
+for i in tweet_text:
+    text = str(i)
+    split_time = text[0:5]
+    split_tail = text[7:]
+    match_start_time += [split_time]
+
+    split_text1 = split_tail.split(" vs. ")
+    home_team.append(split_text1[0])
+    away_team.append(split_text1[1])
+
+df['match_start_time'] = match_start_time
+df['home_team'] = home_team
+df['away_team'] = away_team
+
+# splitting the HOME odds set
+
+home_venue_odds = df.home_odds.tolist()
+
+home_venue_1 = []
+home_venue_X = []
+home_venue_2 = []
+
+for i in home_venue_odds:
+    split_text2 = i.split(' ')
+    home_venue_1.append(split_text2[1])
+    home_venue_X.append(split_text2[3])
+    home_venue_2.append(split_text2[5])
+
+df['home_odds_1'] = home_venue_1
+df['home_odds_X'] = home_venue_X
+df['home_odds_2'] = home_venue_2
+
+# deleting unnecessary columns
+
+cols = [0,1,2,3,4]
+df.drop(df.columns[cols],axis=1,inplace=True)
+
+# writing to final csv
+
+df.to_csv('csv/goalimpact_generated_odds_final.csv')
