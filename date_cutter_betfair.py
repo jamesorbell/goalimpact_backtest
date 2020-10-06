@@ -28,5 +28,3 @@ df['time'] = time
 # writing to final csv
 
 df.to_csv('csv/betfair_exchange_odds_final.csv')
-
-# 10/3/2020 23:30
