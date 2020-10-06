@@ -1,6 +1,7 @@
 # importing pandas as pd
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Read the csv file and construct the
 # dataframe
@@ -17,6 +18,9 @@ stake = 100
 
 # Bet count
 bet_count = 0
+
+# array for pyplot
+data_points = []
 
 for index, row in df.iterrows():
 
@@ -62,7 +66,7 @@ for index, row in df.iterrows():
     elif bet_action == 'Lay_X':
         # Action is laying the draw.
         if row['winner_ft'] != 'D':
-            profit += (0.98 * (stake/(betfair_1_odds - 1)))
+            profit += (0.98 * (stake/(betfair_X_odds - 1)))
             total_staked += stake
         else:
             profit = profit - stake
@@ -70,16 +74,27 @@ for index, row in df.iterrows():
     elif bet_action == 'Lay_2':
         # Action is laying the away team.
         if row['winner_ft'] != 'A':
-            profit += (0.98 * (stake/(betfair_1_odds - 1)))
+            profit += (0.98 * (stake/(betfair_2_odds - 1)))
             total_staked += stake
         else:
             profit = profit - stake
             total_staked += stake
     else:
         print('No action detected, error.')
-        # Some error detected, throws to the terminal.
+        # Some error detected, throws to the terminal.\
+
+    data_points.append(profit)
+
+# writing to final csv
+df.to_csv('csv/ONLY_BETS.csv')
 
 print('Final fix staked profit, with £' + str(stake) + ' stakes: £' + str(round(profit,2)))
 print('Note: This includes all betfair fees paid, so only pure profit is applied.')
 print('Total staked: £' + str(total_staked))
 print('Number of bets: ' + str(bet_count))
+
+plt.plot(data_points)
+plt.axis([0,5000,-1000,250000])
+plt.ylabel('Cumulative profit, in £')
+plt.xlabel('No. of bets')
+plt.show()
