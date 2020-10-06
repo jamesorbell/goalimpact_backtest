@@ -26,5 +26,4 @@ df['date'] = date
 df['time'] = time
 
 # writing to final csv
-
 df.to_csv('csv/betfair_exchange_odds_final.csv')
