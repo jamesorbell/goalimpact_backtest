@@ -81,15 +81,15 @@ for i in odds_1_value:
 
     if values[biggest_value] >= 0:
         # This means that the value is with backing.
-        if biggest_value == 0 and values[biggest_value] >= 15:
+        if biggest_value == 0 and values[biggest_value] >= 20:
             # Most value in backing the home team.
             value_string.append('Back_1')
 
-        elif biggest_value == 1 and values[biggest_value] >= 15:
+        elif biggest_value == 1 and values[biggest_value] >= 20:
             # Most value in backing the draw.
             value_string.append('Back_X')
 
-        elif biggest_value == 2 and values[biggest_value] >= 15:
+        elif biggest_value == 2 and values[biggest_value] >= 20:
             # Most value in backing the away team.
             value_string.append('Back_2')
 
@@ -98,15 +98,15 @@ for i in odds_1_value:
 
     else:
         # This means that value is in laying.
-        if biggest_value == 0 and values[biggest_value] <= -15:
+        if biggest_value == 0 and values[biggest_value] <= -20:
             # Most value in backing the home team.
             value_string.append('Lay_1')
 
-        elif biggest_value == 1 and values[biggest_value] <= -15:
+        elif biggest_value == 1 and values[biggest_value] <= -20:
             # Most value in backing the draw.
             value_string.append('Lay_X')
 
-        elif biggest_value == 2 and values[biggest_value] <= -15:
+        elif biggest_value == 2 and values[biggest_value] <= -20:
             # Most value in backing the away team.
             value_string.append('Lay_2')
 
